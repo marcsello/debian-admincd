@@ -1,0 +1,5 @@
+wget
+curl
+ca-certificates
+rsync
+git

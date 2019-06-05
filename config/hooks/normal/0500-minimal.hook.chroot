@@ -11,7 +11,7 @@
 set -e
 
 # Removing unused packages
-for PACKAGE in apt-utils aptitude man-db manpages info wget
+for PACKAGE in apt-utils aptitude man-db manpages info
 do
 	if ! apt-get remove --purge --yes "${PACKAGE}"
 	then
