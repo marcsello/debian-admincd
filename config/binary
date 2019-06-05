@@ -10,7 +10,7 @@ LB_APT_INDICES="false"
 
 # $LB_BOOTAPPEND_LIVE: set boot parameters
 # (Default: empty)
-LB_BOOTAPPEND_LIVE="boot=live text"
+LB_BOOTAPPEND_LIVE="boot=live text noautologin"
 
 # $LB_BOOTAPPEND_INSTALL: set boot parameters
 # (Default: empty)

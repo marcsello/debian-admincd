@@ -1,0 +1,26 @@
+#!/bin/sh
+
+## Part of the Debian AdminCD project
+
+set -e
+
+SYSTEMD_DIR=$1
+
+for NUMBER in $(seq 1 6); do
+
+	GETTY_SERVICE_D=$SYSTEMD_DIR/getty@tty${NUMBER}.service.d
+	CONF=$GETTY_SERVICE_D/auto-root-login.conf
+	mkdir -p $GETTY_SERVICE_D
+
+	cat > $CONF << EOF
+[Service]
+Type=idle
+ExecStart=
+ExecStart=-/sbin/agetty --autologin root --noclear %I \$TERM
+TTYVTDisallocate=no
+EOF
+
+done
+
+exit 0
+
