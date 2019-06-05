@@ -18,7 +18,7 @@ LB_APT_PIPELINE=""
 
 # $LB_APT_RECOMMENDS: set apt/aptitude recommends
 # (Default: true)
-LB_APT_RECOMMENDS="true"
+LB_APT_RECOMMENDS="false"
 
 # $LB_APT_SECURE: set apt/aptitude security
 # (Default: true)
