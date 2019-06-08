@@ -1,2 +1,7 @@
 traceroute
 openssh-client
+ethtool
+netcat-openbsd
+telnet
+whois
+dnsutils

@@ -1,3 +1,6 @@
 usbutils
 pciutils
 lshw
+dmidecode
+flashrom
+setserial

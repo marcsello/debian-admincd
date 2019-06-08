@@ -1,2 +1,5 @@
 lvm2
 mdadm
+dosfstools
+ntfs-3g
+
