@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Part of the Debian AdminCD project
+
+cat >> /root/.bashrc << EOF
+
+# Appended by Debian AdminCD project
+
+use_color=false
+
+case \${TERM} in
+	[aEkx]term*|rxvt*|gnome*|konsole*|screen|cons25|*color|linux) use_color=true
+esac
+
+
+if \$use_color; then
+
+	eval \$(dircolors)
+	export LS_OPTIONS='--color=auto'
+	alias ls='ls \$LS_OPTIONS'
+	alias ll='ls \$LS_OPTIONS -l'
+	alias l='ls \$LS_OPTIONS -lA'
+        alias grep='grep --colour=auto'
+        alias egrep='egrep --colour=auto'
+        alias fgrep='fgrep --colour=auto'
+
+	# This is the root's bashrc, so uid should be 0 anyways
+
+	[ "\$EUID" -eq "0" ] && PS1='\[\033[01;31m\]\h\[\033[01;34m\] \w \$\[\033[00m\] ' # overwrite the default setting
+
+fi
+
+# if colors not supported, just use the default prompt, which is fine
+EOF
