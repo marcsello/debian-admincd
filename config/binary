@@ -10,7 +10,8 @@ LB_APT_INDICES="false"
 
 # $LB_BOOTAPPEND_LIVE: set boot parameters
 # (Default: empty)
-LB_BOOTAPPEND_LIVE="boot=live text noautologin"
+# noautologin should be added here, because it does not work the standard way
+LB_BOOTAPPEND_LIVE="boot=live text noautologin loglevel=3"
 
 # $LB_BOOTAPPEND_INSTALL: set boot parameters
 # (Default: empty)
