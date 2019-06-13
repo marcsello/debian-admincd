@@ -26,7 +26,7 @@ if \$use_color; then
 
 	# This is the root's bashrc, so uid should be 0 anyways
 
-	[ "\$EUID" -eq "0" ] && PS1='\[\033[01;31m\]\h\[\033[01;34m\] \w \$\[\033[00m\] ' # overwrite the default setting
+	[ "\$EUID" -eq "0" ] && PS1='\[\033[01;31m\]\h\[\033[01;34m\] \w #\[\033[00m\] ' # overwrite the default setting
 
 fi
 
