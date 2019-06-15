@@ -29,6 +29,11 @@ After that, if everything went okay, you should find the admincd image named `li
 
 ## Prebuilt binaries
 
+Functional `iso` files can be downloaded here:  
+https://github.com/marcsello/debian-admincd/releases
+
+Burn it on a CD, `dd` it on a usb stick, whatever works for you.
+
 At the moment, I don't really know how to how could I set this up to automagically build, but I'm working on it.
 
 ## Design choices
