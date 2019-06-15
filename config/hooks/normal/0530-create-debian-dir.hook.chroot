@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Part of the Debian AdminCD project
+
+mkdir -p /mnt/debian # The reason this is a separate script instead of just a folder in the include.chroot is that git don't keep track of empty folders, but the folder must be empty to use as a mount point
