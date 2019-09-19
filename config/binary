@@ -48,7 +48,7 @@ LB_DEBIAN_INSTALLER="netinst"
 
 # $LB_DEBIAN_INSTALLER_DISTRIBUTION: set debian-installer suite
 # (Default: empty)
-LB_DEBIAN_INSTALLER_DISTRIBUTION="stretch"
+LB_DEBIAN_INSTALLER_DISTRIBUTION="buster"
 
 # $LB_DEBIAN_INSTALLER_PRESEEDFILE: set debian-installer preseed filename/url
 # (Default: )
@@ -88,7 +88,7 @@ LB_ISO_PUBLISHER="Marcsello"
 
 # $LB_ISO_VOLUME: set iso volume (max 32 chars)
 # (Default: Debian stretch $(date +%Y%m%d-%H:%M))
-LB_ISO_VOLUME="Debian stretch $(date +%Y%m%d-%H:%M)"
+LB_ISO_VOLUME="Debian buster $(date +%Y%m%d-%H:%M)"
 
 # $LB_JFFS2_ERASEBLOCK: set jffs2 eraseblock size
 # (Default: unset)

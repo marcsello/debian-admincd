@@ -2,15 +2,15 @@
 
 # $LB_DISTRIBUTION: select distribution to use
 # (Default: stretch)
-LB_DISTRIBUTION="stretch"
+LB_DISTRIBUTION="buster"
 
 # $LB_PARENT_DISTRIBUTION: select parent distribution to use
 # (Default: stretch)
-LB_PARENT_DISTRIBUTION="stretch"
+LB_PARENT_DISTRIBUTION="buster"
 
 # $LB_PARENT_DEBIAN_INSTALLER_DISTRIBUTION: select parent distribution for debian-installer to use
 # (Default: stretch)
-LB_PARENT_DEBIAN_INSTALLER_DISTRIBUTION="stretch"
+LB_PARENT_DEBIAN_INSTALLER_DISTRIBUTION="buster"
 
 # $LB_PARENT_MIRROR_BOOTSTRAP: set parent mirror to bootstrap from
 # (Default: http://ftp.debian.org/debian/)
