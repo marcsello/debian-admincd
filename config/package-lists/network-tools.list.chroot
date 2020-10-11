@@ -5,3 +5,5 @@ netcat-openbsd
 telnet
 whois
 dnsutils
+iperf3
+arping
