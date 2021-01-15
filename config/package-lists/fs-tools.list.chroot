@@ -3,3 +3,4 @@ mdadm
 dosfstools
 ntfs-3g
 parted
+fstransform
