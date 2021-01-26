@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# This command downloads the openssh-server and it's dependencies into the apt cache. So it can be installed boot time when required without internet access
+
+mkdir -p "/var/cache/live-apt"
+apt --download-only --yes -o Dir::Cache="/var/cache/live-apt" -o Dir::Cache::archives="archives/" install openssh-server

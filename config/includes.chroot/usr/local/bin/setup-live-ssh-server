@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+# First set: Install the included ssh server, but not start it
+# wtf going on?
+RUNLEVEL=1 apt --yes -o Dir::Cache="/var/cache/live-apt" -o Dir::Cache::archives="archives/" --no-download install /var/cache/live-apt/archives/*.deb
+
+# set root password
+
+ROOT_PASSWD=$(pwgen -B 9 1)
+echo "root:${ROOT_PASSWD}" | chpasswd
+
+# Apply config changes
+
+# remove comment hashmark
+sed -i -re 's/^(\#)(PermitRootLogin)([[:space:]]+)(.*)/\2\3\4/' /etc/ssh/sshd_config
+# change root login to yes
+sed -i -re 's/^(\#?)(PermitRootLogin)([[:space:]]+)prohibit-password/\2\3yes/' /etc/ssh/sshd_config
+
+
+# TODO: Update motd
+cat >> /etc/motd << EOF
+
+========================================
+         SSH Server enabled!
+
+         User: root
+         Password: ${ROOT_PASSWD}
+========================================
+
+EOF
+
+
+
+# Start the ssh server
+systemctl restart sshd.service
