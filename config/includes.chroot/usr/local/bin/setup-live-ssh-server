@@ -1,37 +1,95 @@
 #!/bin/bash
 
+## Part of the Debian AdminCD project
+
 set -e
 
-# First set: Install the included ssh server, but not start it
-# wtf going on?
-RUNLEVEL=1 apt --yes -o Dir::Cache="/var/cache/live-apt" -o Dir::Cache::archives="archives/" --no-download install /var/cache/live-apt/archives/*.deb
+function fail {
+	echo "$@"
+	exit 1
+}
+
+while [ $# -ne 0 ]; do
+
+    arg="$1"
+    case "$arg" in
+        -q)
+            QUIET="yes"
+            ;;
+        -M)
+            NO_MOTD="yes"
+            ;;
+        -k)
+            SSH_KEY_URL="$2"
+            shift # shift out param as well
+            ;;
+    esac
+    shift # pop an arg
+
+done
+
+
+
+# Check if ssh server already installed
+
+for f in /etc/ssh/sshd_config /lib/systemd/system/ssh.service /usr/sbin/sshd; do
+
+	test -f "$f" && fail "SSH Server seems to be already configured"
+
+done
+
+# prevent SSH server from starting just after install
+touch /etc/ssh/sshd_not_to_be_run
+
+
+# For some reason "false" means "Yes, do allow root login please"...
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=745778
+# https://www.debian.org/releases/jessie/amd64/release-notes/ch-information.en.html#openssh
+debconf-set-selections <<< 'd-i openssh-server/permit-root-login boolean false'
+
+# Install openssh server and it's dependencies
+dpkg -i /var/cache/openssh-server-pkgs/*.deb
 
 # set root password
-
 ROOT_PASSWD=$(pwgen -B 9 1)
 echo "root:${ROOT_PASSWD}" | chpasswd
 
-# Apply config changes
+# Download SSH key if specified
+if [[ -n "${SSH_KEY_URL}" ]]; then
 
-# remove comment hashmark
-sed -i -re 's/^(\#)(PermitRootLogin)([[:space:]]+)(.*)/\2\3\4/' /etc/ssh/sshd_config
-# change root login to yes
-sed -i -re 's/^(\#?)(PermitRootLogin)([[:space:]]+)prohibit-password/\2\3yes/' /etc/ssh/sshd_config
+	mkdir -p /root/.ssh
+	wget -O /root/.ssh/authorized_keys "${SSH_KEY_URL}"
+	chmod 400 /root/.ssh/authorized_keys
+
+fi
 
 
-# TODO: Update motd
-cat >> /etc/motd << EOF
+# Update motd
+if [[ -z "${NO_MOTD}" ]]; then
+	cat >> /etc/motd << EOF
 
 ========================================
          SSH Server enabled!
 
          User: root
          Password: ${ROOT_PASSWD}
-========================================
-
 EOF
 
+	[[ -n "${SSH_KEY_URL}" ]] && echo "  SSH key added from ${SSH_KEY_URL}" >> /etc/motd
 
+	echo -e "========================================\n" >> /etc/motd
+
+fi
+
+# Print the same info
+if [[ -z "${QUIET}" ]]; then
+	echo "======================"
+	echo "SSH Server configured!"
+	echo "User: root"
+	echo "Password ${ROOT_PASSWD}"
+	[[ -n "${SSH_KEY_URL}" ]] && echo "SSH key added from ${SSH_KEY_URL}"
+fi
 
 # Start the ssh server
-systemctl restart sshd.service
+rm /etc/ssh/sshd_not_to_be_run
+systemctl start ssh.service
