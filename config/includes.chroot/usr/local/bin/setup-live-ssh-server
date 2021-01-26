@@ -90,7 +90,7 @@ function print_connection_details {
 	tput sgr0
 	echo "User: root"
 	echo "Password: ${ROOT_PASSWD}"
-	[[ -n "${SSH_KEY_URL}" ]] && echo "SSH key added from ${SSH_KEY_URL}"
+	[[ -n "${SSH_KEY_URL}" ]] && echo "SSH key added from ${SSH_KEY_URL}" || true # otherwise the script would fail because set -e
 
 }
 
