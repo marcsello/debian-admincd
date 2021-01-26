@@ -13,10 +13,12 @@ function print_help {
         echo "Debian AdminCD SSH server setup script"
 	echo
 	echo "Params:"
-        echo -e "-q\tDo not print connection details when the script finishes"
-	echo -e "-M\tDo not append connection details to /etc/motd"
-	echo -e "-k URL\tDownload and install SSH public key from URL"
-	echo -e "-h\tThis help"
+        echo "-q              Do not print connection details when the script finishes"
+	echo "-m              Do not append connection details to /etc/motd"
+	echo "-k URL          Download and install SSH public key from URL"
+	echo "-p PASSOWRD     Use PASSWORD instead of a generated one"
+	echo "-P              Do not configure root password (login only via key)"
+	echo "-h/--help       This help"
 	echo
 }
 
@@ -27,7 +29,7 @@ while [ $# -ne 0 ]; do
         -q)
             QUIET="yes"
             ;;
-        -M)
+        -m)
             NO_MOTD="yes"
             ;;
         -k)
@@ -37,6 +39,13 @@ while [ $# -ne 0 ]; do
         -h|--help)
             print_help
             exit 0
+            ;;
+        -p)
+            ROOT_PASSWD="$2"
+            shift
+            ;;
+        -P)
+            NO_PASSWD_CONFIG="yes"
             ;;
         *)
             print_help
@@ -62,14 +71,21 @@ touch /etc/ssh/sshd_not_to_be_run
 # For some reason "false" means "Yes, do allow root login please"...
 # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=745778
 # https://www.debian.org/releases/jessie/amd64/release-notes/ch-information.en.html#openssh
-debconf-set-selections <<< 'd-i openssh-server/permit-root-login boolean false'
+[[ -z "${NO_PASSWD_CONFIG}" ]] && debconf-set-selections <<< 'd-i openssh-server/permit-root-login boolean false'
 
 # Install openssh server and it's dependencies
 dpkg -i /var/cache/openssh-server-pkgs/*.deb
 
-# generate and set root password
-ROOT_PASSWD=$(pwgen -B 9 1)
-echo "root:${ROOT_PASSWD}" | chpasswd
+
+if [[ -z "${NO_PASSWD_CONFIG}" ]]; then
+	# generate and set root password
+
+	if [[ -z "${ROOT_PASSWD}" ]]; then
+		ROOT_PASSWD=$(pwgen -B 9 1)
+	fi
+
+	echo "root:${ROOT_PASSWD}" | chpasswd
+fi
 
 # Download SSH key if specified
 if [[ -n "${SSH_KEY_URL}" ]]; then
@@ -89,7 +105,7 @@ function print_connection_details {
 	echo "[SSH server enabled!]"
 	tput sgr0
 	echo "User: root"
-	echo "Password: ${ROOT_PASSWD}"
+	[[ -z "${NO_PASSWD_CONFIG}" ]] && echo "Password: ${ROOT_PASSWD}"
 	[[ -n "${SSH_KEY_URL}" ]] && echo "SSH key added from ${SSH_KEY_URL}" || true # otherwise the script would fail because set -e
 
 }
