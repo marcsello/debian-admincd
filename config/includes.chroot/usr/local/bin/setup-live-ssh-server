@@ -13,10 +13,10 @@ function print_help {
         echo "Debian AdminCD SSH server setup script"
 	echo
 	echo "Params:"
-        echo "-q\tDo not print connection details when the script finishes"
-	echo "-M\tDo not append connection details to /etc/motd"
-	echo "-k URL\tDownload and install SSH public key from URL"
-	echo "-h\tThis help"
+        echo -e "-q\tDo not print connection details when the script finishes"
+	echo -e "-M\tDo not append connection details to /etc/motd"
+	echo -e "-k URL\tDownload and install SSH public key from URL"
+	echo -e "-h\tThis help"
 	echo
 }
 
@@ -34,7 +34,7 @@ while [ $# -ne 0 ]; do
             SSH_KEY_URL="$2"
             shift # shift out param as well
             ;;
-        -h)
+        -h|--help)
             print_help
             exit 0
             ;;
