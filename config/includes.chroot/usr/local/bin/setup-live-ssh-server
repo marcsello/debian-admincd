@@ -9,6 +9,17 @@ function fail {
 	exit 1
 }
 
+function print_help {
+        echo "Debian AdminCD SSH server setup script"
+	echo
+	echo "Params:"
+        echo "-q\tDo not print connection details when the script finishes"
+	echo "-M\tDo not append connection details to /etc/motd"
+	echo "-k URL\tDownload and install SSH public key from URL"
+	echo "-h\tThis help"
+	echo
+}
+
 while [ $# -ne 0 ]; do
 
     arg="$1"
@@ -23,6 +34,13 @@ while [ $# -ne 0 ]; do
             SSH_KEY_URL="$2"
             shift # shift out param as well
             ;;
+        -h)
+            print_help
+            exit 0
+            ;;
+        *)
+            print_help
+            fail "Unknown option: $arg"
     esac
     shift # pop an arg
 
@@ -31,7 +49,6 @@ done
 
 
 # Check if ssh server already installed
-
 for f in /etc/ssh/sshd_config /lib/systemd/system/ssh.service /usr/sbin/sshd; do
 
 	test -f "$f" && fail "SSH Server seems to be already configured"
@@ -50,7 +67,7 @@ debconf-set-selections <<< 'd-i openssh-server/permit-root-login boolean false'
 # Install openssh server and it's dependencies
 dpkg -i /var/cache/openssh-server-pkgs/*.deb
 
-# set root password
+# generate and set root password
 ROOT_PASSWD=$(pwgen -B 9 1)
 echo "root:${ROOT_PASSWD}" | chpasswd
 
@@ -65,29 +82,26 @@ fi
 
 
 # Update motd
+
+function print_connection_details {
+
+	tput bold
+	echo "[SSH server enabled!]"
+	tput sgr0
+	echo "User: root"
+	echo "Password: ${ROOT_PASSWD}"
+	[[ -n "${SSH_KEY_URL}" ]] && echo "SSH key added from ${SSH_KEY_URL}"
+
+}
+
+
 if [[ -z "${NO_MOTD}" ]]; then
-	cat >> /etc/motd << EOF
-
-========================================
-         SSH Server enabled!
-
-         User: root
-         Password: ${ROOT_PASSWD}
-EOF
-
-	[[ -n "${SSH_KEY_URL}" ]] && echo "  SSH key added from ${SSH_KEY_URL}" >> /etc/motd
-
-	echo -e "========================================\n" >> /etc/motd
-
+	(echo; print_connection_details; echo) >> /etc/motd
 fi
 
 # Print the same info
 if [[ -z "${QUIET}" ]]; then
-	echo "======================"
-	echo "SSH Server configured!"
-	echo "User: root"
-	echo "Password ${ROOT_PASSWD}"
-	[[ -n "${SSH_KEY_URL}" ]] && echo "SSH key added from ${SSH_KEY_URL}"
+	print_connection_details
 fi
 
 # Start the ssh server
