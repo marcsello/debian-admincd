@@ -1,0 +1,18 @@
+#!/bin/bash
+
+for arg in $(cat /proc/cmdline); do
+	case "${arg}" in
+
+		withssh)
+			SETUP_SSH="yes"
+			;;
+
+	esac
+
+done
+
+
+if [[ -n "${SETUP_SSH}" ]]; then
+	/usr/local/bin/setup-live-ssh-server -q -S
+fi
+
