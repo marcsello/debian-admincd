@@ -18,6 +18,7 @@ function print_help {
 	echo "-k URL          Download and install SSH public key from URL"
 	echo "-p PASSOWRD     Use PASSWORD instead of a generated one"
 	echo "-P              Do not configure root password (login only via key)"
+	echo "-S              Do not start/restart the systemd service (have to restart manually)"
 	echo "-h/--help       This help"
 	echo
 }
@@ -47,6 +48,9 @@ while [ $# -ne 0 ]; do
         -P)
             NO_PASSWD_CONFIG="yes"
             ;;
+        -S)
+            NO_SYSTEMD="yes"
+            ;;
         *)
             print_help
             fail "Unknown option: $arg"
@@ -65,7 +69,7 @@ for f in /etc/ssh/sshd_config /lib/systemd/system/ssh.service /usr/sbin/sshd; do
 done
 
 # prevent SSH server from starting just after install
-touch /etc/ssh/sshd_not_to_be_run
+[[ -z "${NO_SYSTEMD}" ]] && touch /etc/ssh/sshd_not_to_be_run || true
 
 
 # For some reason "false" means "Yes, do allow root login please"...
@@ -101,11 +105,10 @@ fi
 
 function print_connection_details {
 
-	tput bold
-	echo "[SSH server enabled!]"
-	tput sgr0
+	echo -e "\033[1m[SSH server enabled!]\033[0m"
+
 	echo "User: root"
-	[[ -z "${NO_PASSWD_CONFIG}" ]] && echo "Password: ${ROOT_PASSWD}"
+	[[ -z "${NO_PASSWD_CONFIG}" ]] && echo "Password: ${ROOT_PASSWD}" || true
 	[[ -n "${SSH_KEY_URL}" ]] && echo "SSH key added from ${SSH_KEY_URL}" || true # otherwise the script would fail because set -e
 
 }
@@ -115,11 +118,13 @@ if [[ -z "${NO_MOTD}" ]]; then
 	(echo; print_connection_details; echo) >> /etc/motd
 fi
 
-# Print the same info
 if [[ -z "${QUIET}" ]]; then
+	# Print the same info
 	print_connection_details
 fi
 
-# Start the ssh server
-rm /etc/ssh/sshd_not_to_be_run
-systemctl start ssh.service
+if [[ -z "${NO_SYSTEMD}" ]]; then
+	# Start the ssh server
+	rm /etc/ssh/sshd_not_to_be_run
+	systemctl start ssh.service
+fi
