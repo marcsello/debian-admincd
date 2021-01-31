@@ -1,0 +1,18 @@
+label live-@FLAVOUR@
+	menu label ^Debian Admin CD
+	menu default
+	linux @LINUX@
+	initrd @INITRD@
+	append @APPEND_LIVE@
+
+label live-@FLAVOUR@-ssh
+	menu label ^Debian Admin CD with SSH server
+	linux @LINUX@
+	initrd @INITRD@
+	append @APPEND_LIVE@ withssh
+
+label live-@FLAVOUR@-failsafe
+	menu label ^Debian Admin CD Failsafe
+	linux @LINUX@
+	initrd @INITRD@
+	append @APPEND_LIVE_FAILSAFE@
