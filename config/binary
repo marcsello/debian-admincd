@@ -19,7 +19,10 @@ LB_BOOTAPPEND_INSTALL=""
 
 # $LB_BOOTAPPEND_LIVE_FAILSAFE: set boot parameters
 # (Default: empty)
-LB_BOOTAPPEND_LIVE_FAILSAFE="boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=normal"
+# noautologin should be added here, because it does not work the standard way
+# NOTE: grub-efi have the following values hard-coded because of a bug in live-build
+# See config/bootloaders/grub-pc/grub.cfg
+LB_BOOTAPPEND_LIVE_FAILSAFE="boot=live components noautologin memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=normal"
 
 # $LB_BOOTLOADERS: set bootloaders
 # (Default: syslinux,grub-efi)
