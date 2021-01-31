@@ -1,0 +1,43 @@
+#!/bin/bash
+
+## Part of the Debian AdminCD project
+
+for arg in $(cat /proc/cmdline); do
+	case "${arg}" in
+
+		withssh.pw=*)
+			SETUP_SSH="yes"
+			SSH_PW=${arg#*=}
+			;;
+
+		withssh.nopw)
+			SETUP_SSH="yes"
+			SSH_NOPW="yes"
+			;;
+
+		withssh.key=*)
+			SETUP_SSH="yes"
+			SSH_KEY=${arg#*=}
+			;;
+
+
+		withssh)
+			SETUP_SSH="yes"
+			;;
+
+
+	esac
+
+done
+
+
+if [[ -n "${SETUP_SSH}" ]]; then
+	cmdline="/usr/local/bin/setup-live-ssh-server -q -S"
+
+	[[ -n "${SSH_PW}"   ]] && cmdline="$cmdline -p ${SSH_PW}"
+	[[ -n "${SSH_NOPW}" ]] && cmdline="$cmdline -P"
+	[[ -n "${SSH_KEY}"  ]] && cmdline="$cmdline -k ${SSH_KEY}"
+
+	${cmdline}
+fi
+

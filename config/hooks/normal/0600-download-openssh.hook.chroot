@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# This command downloads the openssh-server and it's dependencies into the apt cache. So it can be installed boot time when required without internet access
+
+WORKDIR="/tmp/openssh-server-pkgs/"
+TARGETDIR="/var/cache/openssh-server-pkgs/"
+
+mkdir -p "${WORKDIR}/cache"
+apt --download-only --yes -o Dir::Cache="${WORKDIR}/cache" -o Dir::Cache::archives="archives/" install openssh-server
+
+
+mkdir -p "${TARGETDIR}"
+mv "${WORKDIR}/cache/archives/"*".deb" "${TARGETDIR}"
+
+rm -r "${WORKDIR}"
