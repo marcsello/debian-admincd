@@ -72,10 +72,15 @@ done
 [[ -z "${NO_SYSTEMD}" ]] && touch /etc/ssh/sshd_not_to_be_run || true
 
 
-# For some reason "false" means "Yes, do allow root login please"...
-# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=745778
-# https://www.debian.org/releases/jessie/amd64/release-notes/ch-information.en.html#openssh
-[[ -z "${NO_PASSWD_CONFIG}" ]] && debconf-set-selections <<< 'd-i openssh-server/permit-root-login boolean false'
+if [[ -z "${NO_PASSWD_CONFIG}" ]]; then
+	# For some reason "false" means "Yes, do allow root login please"...
+	# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=745778
+	# https://www.debian.org/releases/jessie/amd64/release-notes/ch-information.en.html#openssh
+	debconf-set-selections <<< 'd-i openssh-server/permit-root-login boolean false'
+	debconf-set-selections <<< 'd-i openssh-server/password-authentication boolean true'
+else
+	debconf-set-selections <<< 'd-i openssh-server/password-authentication boolean false'
+fi
 
 # Install openssh server and it's dependencies
 dpkg -i /var/cache/openssh-server-pkgs/*.deb
