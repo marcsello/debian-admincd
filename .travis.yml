@@ -1,0 +1,24 @@
+dist: focal
+sudo: required
+
+addons:
+  apt:
+    update: true
+    packages:
+    - live-build
+
+script:
+  - sudo lb build --verbose
+  - mv live-image-amd64.hybrid.iso 
+  - tar -cvzf pxe.tar.gz -C binary/live/ pxe.tar.gz filesystem.squashfs initrd.img vmlinuz
+  
+after_success:
+  - echo "TODO: Upload"
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: echo "TODO: Mark release"
+  on:
+    tags: true
+    branch: master
