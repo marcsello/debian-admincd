@@ -18,7 +18,7 @@ after_success:
 deploy:
   skip_cleanup: true
   provider: script
-  script: echo "TODO: Mark release"
+  script: 'echo "TODO: Mark release"'
   on:
     tags: true
     branch: master
