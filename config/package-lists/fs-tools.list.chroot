@@ -4,3 +4,5 @@ dosfstools
 ntfs-3g
 parted
 fstransform
+cryptsetup
+f2fs-tools

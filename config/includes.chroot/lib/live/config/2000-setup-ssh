@@ -2,6 +2,10 @@
 
 ## Part of the Debian AdminCD project
 
+# This script is named 2000- on purpose
+# So that it will run after 1160-openssh-server
+# This is required because 1160-openssh-server does stuff that brakes our stuff (changing PasswordAuthentication to no for example)
+
 for arg in $(cat /proc/cmdline); do
 	case "${arg}" in
 

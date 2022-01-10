@@ -5,6 +5,7 @@ binary*.tar*
 binary*.contents
 binary*.packages
 binary*.zsync
+binary.modified_timestamps
 
 .build/
 build.log
