@@ -24,6 +24,9 @@ LB_BOOTLOADER_BIOS="syslinux"
 # Set EFI bootloader
 LB_BOOTLOADER_EFI="grub-efi"
 
+# Set bootloaders
+LB_BOOTLOADERS=""
+
 # Set checksums
 LB_CHECKSUMS="md5"
 
