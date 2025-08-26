@@ -13,7 +13,7 @@ function print_help {
         echo "Debian AdminCD SSH server setup script"
 	echo
 	echo "Params:"
-        echo "-q              Do not print connection details when the script finishes"
+	echo "-q              Do not print connection details when the script finishes"
 	echo "-m              Do not append connection details to /etc/motd"
 	echo "-k URL          Download and install SSH public key from URL"
 	echo "-p PASSOWRD     Use PASSWORD instead of a generated one"
