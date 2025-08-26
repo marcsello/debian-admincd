@@ -53,7 +53,7 @@ LB_BUILD_WITH_CHROOT="true"
 LB_DEBIAN_INSTALLER="netinst"
 
 # Set debian-installer suite
-LB_DEBIAN_INSTALLER_DISTRIBUTION="bookworm"
+LB_DEBIAN_INSTALLER_DISTRIBUTION="trixie"
 
 # Set debian-installer preseed filename/url
 LB_DEBIAN_INSTALLER_PRESEEDFILE=""
@@ -74,13 +74,13 @@ LB_HDD_PARTITION_START=""
 LB_ISO_APPLICATION="Debian AdminCD"
 
 # Set iso preparer
-LB_ISO_PREPARER="live-build 20210902; http://live-systems.org/devel/live-build"
+LB_ISO_PREPARER="live-build"
 
 # Set iso publisher
 LB_ISO_PUBLISHER="Marcsello"
 
 # Set iso volume (max 32 chars)
-LB_ISO_VOLUME="Debian bookworm 20231017"
+LB_ISO_VOLUME="Debian trixie 20250826"
 
 # Set jffs2 eraseblock size
 LB_JFFS2_ERASEBLOCK=""
