@@ -1,0 +1,16 @@
+traceroute
+ethtool
+whois
+dnsutils
+iperf3
+arping
+ifstat
+
+netcat-openbsd
+telnet
+openssh-client
+wget
+curl
+ca-certificates
+rsync
+git
