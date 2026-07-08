@@ -10,17 +10,17 @@ Built using standard [Debian Live](https://www.debian.org/devel/debian-live/) to
 
 Essentially this is a simple live image, with a selection of administration tools preinstalled. This image can be used to rescue your system, debug hardware issues, or even install Debian with `debootstrap`, from a more friendly interface than Debian installer's rescue mode.
 
-With the included Live SSH Setup tool, Debian Admin CD can be used to bootstrap a managed node with [Ansible](https://www.ansible.com/)! Read more [in the tools documentation](tools.md).
+With the included Live SSH Setup tool, Debian Admin CD can be used to bootstrap a managed node with [Ansible](https://www.ansible.com/)! Read more [in the tools documentation](tools_admincd.md).
 
 ## Tools
 
-Originally, Debian Admin CD was just a basic Debian live CD with a lot of preinstalled packages. But as time went on, a few home-grown tools and scripts were added to make Debian Admin CD suitable for even more tasks!
+Originally, Debian Admin CD was just a basic Debian live CD with a [lot of preinstalled packages](tools_debian.md). But as time went on, a few home-grown tools and scripts were added to make Debian Admin CD suitable for even more tasks!
 
 Tools currently included:
 
 - **Live SSH setup** Pre-configure an SSH server even from the kernel commandline (Useful for PXE booting)
 
-Detailed description about the included tools/scripts can be found [in the tools documentation](tools.md).
+Detailed description about the included tools/scripts can be found [in the tools documentation](tools_admincd.md).
 
 ## Building Debian Admin CD
 

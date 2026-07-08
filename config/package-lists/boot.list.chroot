@@ -1,1 +1,3 @@
+# doc | Booting | Tools to manage system booting
 efibootmgr
+grub2
